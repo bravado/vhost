@@ -1,0 +1,7 @@
+---
+- hosts: all
+  user: vagrant
+
+  tasks:
+    - include: tasks/common.yml
+    - include: tasks/apache-php.yml
