@@ -1,0 +1,5 @@
+smtp_server: localhost
+smtp_port: 25
+admin_email: vhost@bravado.com.br
+admin_password: admin
+vhost_domain: vhost.dev

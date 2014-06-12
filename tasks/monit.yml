@@ -1,0 +1,13 @@
+# monit.yml
+---
+
+- name: Install Monit
+  sudo: yes
+  apt: name={{ item }} state=present
+  with_items:
+    - monit
+
+
+- name: Start Monit
+  sudo: yes
+  service: name=monit state=running enabled=yes

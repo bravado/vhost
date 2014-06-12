@@ -5,13 +5,29 @@
   sudo: yes
   apt: name=apache2 state=present
 
+- name: Disable event module
+  sudo: yes
+  shell: a2dismod mpm_event
+
+- name: Install mpm-itk
+  sudo: yes
+  apt: name=apache2-mpm-itk
+
 - name: Install PHP and modules
   sudo: yes
   apt: name={{ item }} state=present
   with_items:
     - libapache2-mod-php5
+    - php5-curl
+    - php5-gd
+    - php5-json
+    - php5-mcrypt
     - php5-mysql
   
-- name: Start Apache
+- name: Make sure Apache is stopped
   sudo: yes
-  service: name=apache2 state=running enabled=yes
+  service: name=apache2 state=stopped enabled=no
+
+- name: Add monit script
+  sudo: yes
+  template: src=conf/monit/httpd.j2 dest=/etc/monit/conf.d/httpd.conf owner=root group=root mode=0755

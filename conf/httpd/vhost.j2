@@ -1,0 +1,36 @@
+LogFormat "%V %h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" vhost
+<VirtualHost *:80>
+
+    ServerAlias *.{{ vhost_domain }}
+
+    DocumentRoot /var/www/vhost
+
+
+</VirtualHost>
+
+# Per-user config files
+Include /var/vhost/*/.vhost/*.conf
+
+# Catch-all virtual domain
+<VirtualHost *:80>
+    ServerAlias *
+
+	AssignUserId vhost vhost
+
+	ErrorLog /var/vhost/vhost/logs/error_log
+	CustomLog /var/vhost/vhost/logs/access_log vhost
+
+	RewriteEngine On
+	RewriteOptions inherit
+	RewriteMap lowercase int:tolower
+
+#   Uncomment for debugging
+#	RewriteLog /tmp/rewrite
+#	RewriteLogLevel 9
+
+	RewriteCond %{REQUEST_URI} !^/cgi-bin/
+	RewriteCond %{REQUEST_URI} !^/icons/
+	RewriteCond %{REQUEST_FILENAME} !^/var/vhost/vhost
+	RewriteRule ^(.+)$ ${lowercase:%{SERVER_NAME}}$1 [C]
+	RewriteRule ^([^/]+)/(.*)$ /var/vhost/vhost/$1/html/$2
+</VirtualHost>

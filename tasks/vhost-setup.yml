@@ -1,0 +1,9 @@
+---
+- name: Add basic monitoring script
+  sudo: yes
+  template: src=conf/monit/basic.j2 dest=/etc/monit/conf.d/basic.conf owner=root group=root mode=0755
+
+- name: Create /var/vhost dir
+  sudo: yes
+  file: path=/var/vhost state=directory owner=root group=root mode=0755
+

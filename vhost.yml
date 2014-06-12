@@ -2,6 +2,13 @@
 - hosts: all
   user: vagrant
 
+  vars_files:
+    - conf/vars.yml
+
   tasks:
     - include: tasks/common.yml
+    - include: tasks/monit.yml
     - include: tasks/apache-php.yml
+    - include: tasks/s3ql.yml
+
+    - include: tasks/vhost-setup.yml

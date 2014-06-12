@@ -1,0 +1,20 @@
+# apache-php.yml
+---
+
+- name: Check dependencies
+  sudo: yes
+  apt: name=python-apt state=present
+
+- name: Add s3ql repository
+  sudo: yes
+  apt_repository: repo='ppa:nikratio/s3ql'
+
+- name: Update apt cache
+  sudo: yes
+  apt: update-cache=yes
+
+- name: Install s3ql
+  sudo: yes
+  apt: name={{ item }} state=present
+  with_items:
+    - s3ql
